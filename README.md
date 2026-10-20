@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MMO Market Frontend
 
-## Getting Started
+UI marketplace dengan Next.js App Router, TypeScript, Tailwind CSS, dan gaya neobrutalism berdasarkan [DESIGN.md](../../DESIGN.md).
 
-First, run the development server:
+## Menjalankan
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+bun install
+bun run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Buka `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Halaman | Rute |
+| --- | --- |
+| Landing page | `/` |
+| Detail game | `/games/[slug]` |
+| Login | `/login` |
+| Register | `/register` |
+| Placeholder dashboard seller | `/seller` |
+| Placeholder dashboard admin | `/admin` |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Fitur UI
 
-## Learn More
+- Pencarian game/layanan, filter game dan kategori currency/boosting, reset serta empty state.
+- Dialog detail listing dengan region, server, seller, satuan harga, dan ketersediaan.
+- Menu mobile, FAQ, navigasi antarhalaman, dan layout responsif.
+- Form dengan validasi, pesan error, fokus ke field invalid, dan toggle visibilitas password.
+- Font Inter dan Space Grotesk lokal, lengkap dengan lisensi di `src/app/fonts/`.
+- Ilustrasi SVG orisinal, tanpa ketergantungan aset gambar eksternal.
 
-To learn more about Next.js, take a look at the following resources:
+## Dashboard dummy
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+`/seller` dan `/admin` memakai data lokal dari `src/lib/dashboard-data.ts`. Navigasi sidebar mengganti tampilan di halaman yang sama. Pencarian, filter status, reset filter, dan dialog detail dapat digunakan. Tautan di header berpindah antar-preview admin/seller. Tidak ada perubahan data atau aksi finansial aktif.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Dashboard dapat dibuka langsung untuk keperluan pratinjau, tanpa sesi login atau pemeriksaan peran. Sebelum digunakan dengan data nyata, integrasikan sesi serta otorisasi backend. Statistik dan antrean merupakan snapshot contoh 20 Oktober 2026. Saldo tersedia, tertahan, dan payout diajukan adalah kelompok terpisah; tabel pendapatan hanya berisi sebagian riwayat contoh.
 
-## Deploy on Vercel
+## Data dan integrasi berikutnya
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+`src/lib/demo-data.ts` berisi fixture presentasi, bukan seed database atau respons API aktual. ID fixture berupa identifier lokal. Harga disimpan sebagai string desimal sesuai model listing backend. Rupiah digunakan untuk contoh tampilan; konfigurasi mata uang produksi belum ditetapkan.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Katalog landing dan detail game mengambil API di Server Components melalui `gameService.getAll()` dan `getBySlug()`. Base URL memakai `NEXT_PUBLIC_API_URL` (contoh `http://localhost:8000/api/v1`). Route publik backend repository adalah **`/game` dan `/game/:slug/`**, bukan `/games`. Types bersama berada di `src/lib/types/`, dan envelope `{ success, data }` divalidasi sebelum diteruskan ke UI. HTTP errors tetap berupa `ApiError`; JSON tidak valid, envelope gagal, dan data null ditolak.
+
+Artwork SVG tetap memakai komponen lama dengan mapping slug dan fallback di `src/lib/game-presentation.ts`. Listing, seller, region, dan server masih fixture. Metadata game untuk listing hanya digunakan sebagai label pratinjau; relasi ke game API dicocokkan lewat slug agar UUID asli tidak memutus filter atau dialog. `category_id` fixture adalah UUID; label kategori dipetakan terpisah. Fixture tidak dikirim ke backend.
+
+Auth tetap memakai helper `api()` dengan `credentials: "include"`. Fetch game bersifat publik dan tidak meneruskan cookie browser dari server. Header akun tetap memanggil `/auth/me` di client seperti sebelumnya. Konfigurasi CORS dan cookie backend tetap diperlukan untuk autentikasi browser.
+
+Backend saat ini mengembalikan HTTP 500 untuk slug game yang tidak ditemukan. Frontend menggunakan `notFound()` untuk HTTP 404, sedangkan HTTP 500 menampilkan error dengan tombol coba lagi. Perbaikan status missing-game memerlukan pekerjaan backend terpisah.
+
+## Pemeriksaan
+
+```bash
+bun test tests/game-data.test.ts
+bunx tsc --noEmit --incremental false
+bun run lint
+bun run build
+```
+
+Build default memerlukan lingkungan yang mengizinkan proses/port internal Turbopack. Game diambil saat request di bawah Suspense; backend tidak diperlukan saat prerender build.
