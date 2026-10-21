@@ -60,10 +60,14 @@ export function SiteHeader({ minimal = false }: { minimal?: boolean }) {
     if (session.status === "authenticated") {
       return (
         <>
-          <span className="header-user" title={session.user.email}>
+          <Link
+            className="header-user"
+            href={`/profile/${encodeURIComponent(String(session.user.id))}`}
+            title="Buka profil dan transaksi"
+          >
             <UserRound size={18} aria-hidden="true" />
             <span>{session.user.display_name || session.user.email}</span>
-          </span>
+          </Link>
           <LogoutButton onLoggedOut={() => setSession({ status: "guest" })} />
         </>
       );

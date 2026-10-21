@@ -17,7 +17,7 @@ import {
 import { LootArt } from "@/components/game-art";
 import { useRouter } from "next/navigation";
 import { login, register } from "@/lib/auth";
-import { SellerApplicationForm } from "@/components/seller-application-form";
+import { SellerApplicationForm } from "@/components/seller/application-form";
 
 type Fields = {
   display_name: string;

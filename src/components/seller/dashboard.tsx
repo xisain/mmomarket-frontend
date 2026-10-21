@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, startTransition, use, useEffect, useState } from "react";
+import { DashboardSkeleton } from "@/components/dashboard-skeleton";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -20,7 +21,7 @@ import {
   type SellerProfile,
 } from "@/lib/seller";
 import { formatPrice } from "@/lib/utils/format";
-import "./dashboard.css";
+import "../dashboard.css";
 
 const tabs = [
   { id: "overview", title: "Ringkasan", icon: LayoutDashboard },
@@ -42,7 +43,6 @@ const listingStatuses = {
   archived: "Diarsipkan",
 };
 type State =
-  | { status: "loading" }
   | { status: "error"; message: string; login: boolean }
   | {
       status: "ready";
@@ -52,15 +52,22 @@ type State =
     };
 
 export function SellerDashboard({ sellerId }: { sellerId: string }) {
-  const [state, setState] = useState<State>({ status: "loading" });
   const [attempt, setAttempt] = useState(0);
-  const [tab, setTab] = useState("overview");
-  const [query, setQuery] = useState("");
-  const [status, setStatus] = useState("all");
+  return (
+    <SellerLoader
+      key={`${sellerId}:${attempt}`}
+      sellerId={sellerId}
+      retry={() => setAttempt((value) => value + 1)}
+    />
+  );
+}
+
+function SellerLoader({ sellerId, retry }: { sellerId: string; retry: () => void }) {
+  const [result, setResult] = useState<Promise<State> | null>(null);
 
   useEffect(() => {
     const controller = new AbortController();
-    async function load() {
+    async function load(): Promise<State> {
       try {
         const seller = await getSellerProfile(controller.signal);
         if (seller.id !== sellerId) {
@@ -78,12 +85,10 @@ export function SellerDashboard({ sellerId }: { sellerId: string }) {
             listingError = true;
           }
         }
-        if (!controller.signal.aborted)
-          setState({ status: "ready", seller, listings, listingError });
+        return { status: "ready", seller, listings, listingError };
       } catch (error) {
-        if (controller.signal.aborted) return;
         const login = error instanceof ApiError && error.status === 401;
-        setState({
+        return {
           status: "error",
           login,
           message: login
@@ -95,41 +100,53 @@ export function SellerDashboard({ sellerId }: { sellerId: string }) {
                 : error instanceof Error
                   ? error.message
                   : "Dashboard seller gagal dimuat.",
-        });
+        };
       }
     }
-    void load();
+    // Keep SSR synchronous; the session request starts after hydration.
+    const request = load();
+    startTransition(() => setResult(request));
     return () => controller.abort();
-  }, [sellerId, attempt]);
+  }, [sellerId]);
 
-  function retry() {
-    setState({ status: "loading" });
-    setAttempt((value) => value + 1);
-  }
+  return (
+    <Suspense fallback={<DashboardSkeleton variant="seller" />}>
+      {result ? (
+        <SellerContent result={result} sellerId={sellerId} retry={retry} />
+      ) : (
+        <DashboardSkeleton variant="seller" />
+      )}
+    </Suspense>
+  );
+}
+
+function SellerContent({ result, sellerId, retry }: {
+  result: Promise<State>;
+  sellerId: string;
+  retry: () => void;
+}) {
+  const state = use(result);
+  const [tab, setTab] = useState("overview");
+  const [query, setQuery] = useState("");
+  const [status, setStatus] = useState("all");
 
   if (state.status !== "ready")
     return (
       <main className="container section" id="main-content">
         <Brand />
         <h1>Dashboard seller</h1>
-        {state.status === "loading" ? (
-          <p role="status">Memuat data toko…</p>
+        <p role="alert">{state.message}</p>
+        {state.login ? (
+          <Link
+            className="neo-button"
+            href={`/login?next=${encodeURIComponent(`/seller/${sellerId}`)}`}
+          >
+            Masuk
+          </Link>
         ) : (
-          <>
-            <p role="alert">{state.message}</p>
-            {state.login ? (
-              <Link
-                className="neo-button"
-                href={`/login?next=${encodeURIComponent(`/seller/${sellerId}`)}`}
-              >
-                Masuk
-              </Link>
-            ) : (
-              <button className="neo-button" onClick={retry}>
-                Coba lagi
-              </button>
-            )}
-          </>
+          <button className="neo-button" onClick={retry}>
+            Coba lagi
+          </button>
         )}
         <p>
           <Link href="/">Kembali ke marketplace</Link>

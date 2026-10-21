@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { SellerDashboard } from "@/components/seller-dashboard";
-import { Dashboard } from "@/components/dashboard";
+import { SellerDashboard } from "@/components/seller/dashboard";
+// import { Dashboard } from "@/components/dashboard";
 
 export const metadata: Metadata = { title: "Dashboard Seller" };
 export default async function SellerPage({

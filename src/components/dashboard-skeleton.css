@@ -1,0 +1,18 @@
+.dash-skeleton { display: block; width: 100%; height: 14px; border-radius: 4px; background: #17171718; animation: dash-skeleton-pulse 1.6s ease-in-out infinite; }
+.skeleton-stack { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.dash-workspace > .skeleton-stack { flex: 1; gap: 9px; }
+.skeleton-short { width: 55%; }
+.skeleton-avatar { width: 35px; height: 35px; flex-shrink: 0; border-radius: 50%; }
+.skeleton-nav { display: flex; flex-direction: column; gap: 12px; margin-top: 38px; }
+.skeleton-nav-item { height: 44px; }
+.skeleton-breadcrumb { width: min(260px, 80%); }
+.skeleton-heading { width: min(440px, 100%); }
+.skeleton-title { width: 75%; height: 36px; }
+.skeleton-badge { width: 125px; height: 34px; }
+.skeleton-value { width: 60%; height: 36px; margin-block: 20px 14px; }
+.skeleton-panel { padding: 24px; }
+.skeleton-identity { width: 64px; height: 64px; margin-block: 8px; }
+.skeleton-row { height: 44px; }
+@keyframes dash-skeleton-pulse { 50% { opacity: .4; } }
+@media (max-width: 760px) { .skeleton-nav { margin-top: 15px; }.dash-buyer .skeleton-nav { flex-direction: row; }.skeleton-panel { padding: 20px 16px; } }
+@media (prefers-reduced-motion: reduce) { .dash-skeleton { animation: none; } }
