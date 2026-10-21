@@ -7,6 +7,7 @@ import { Brand } from "@/components/brand";
 import { ApiError } from "@/lib/api";
 import { getCurrentUser, type CurrentUser } from "@/lib/auth";
 import { LogoutButton } from "@/components/logout-button";
+import { sellerDashboardHref } from "@/lib/seller";
 
 type Session =
   | { status: "loading" }
@@ -17,6 +18,18 @@ type Session =
 export function SiteHeader({ minimal = false }: { minimal?: boolean }) {
   const [open, setOpen] = useState(false);
   const [session, setSession] = useState<Session>({ status: "loading" });
+  const seller = session.status === "authenticated" ? session.user.seller : null;
+  const sellerHref = sellerDashboardHref(seller);
+  const sellerLabel = sellerHref ? "Dashboard seller" : "Mulai jualan";
+
+  function sellerAction(mobile = false) {
+    if (seller?.status === "pending") {
+      return <span className="seller-link" role="status">Pengajuan seller menunggu review</span>;
+    }
+    return <Link className={mobile ? undefined : "seller-link"} href={sellerHref ?? "/seller/applications"}>
+      {sellerLabel} {!mobile && <ArrowUpRight size={15} />}
+    </Link>;
+  }
 
   useEffect(() => {
     const controller = new AbortController();
@@ -81,9 +94,7 @@ export function SiteHeader({ minimal = false }: { minimal?: boolean }) {
           </nav>
         )}
         <div className="header-actions">
-          <Link className="seller-link" href="/seller/applications">
-            Mulai jualan <ArrowUpRight size={15} />
-          </Link>
+          {sellerAction()}
           {accountActions()}
         </div>
         <button
@@ -110,7 +121,7 @@ export function SiteHeader({ minimal = false }: { minimal?: boolean }) {
           <Link href="/#games">Jelajahi game</Link>
           <Link href="/#offers">Kategori</Link>
           <Link href="/#how-it-works">Cara kerja</Link>
-          <Link href="/seller/applications">Mulai jualan</Link>
+          {sellerAction(true)}
           {accountActions()}
         </nav>
       )}

@@ -1,9 +1,11 @@
 import { api } from "@/lib/api";
+import type { SellerSummary } from "@/lib/seller";
 
 export type CurrentUser = {
   id: string | number;
   email: string;
   display_name: string;
+  seller?: SellerSummary | null;
 };
 
 type CurrentUserResponse = {
@@ -56,6 +58,7 @@ export async function getCurrentUser(signal?: AbortSignal): Promise<CurrentUser>
   }
 
   const user = response.data;
+  // console.log(user);
   if (
     !user ||
     (typeof user.id !== "string" && typeof user.id !== "number") ||

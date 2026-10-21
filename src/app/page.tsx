@@ -29,7 +29,9 @@ export default function Home() {
         </span>
       </div>
       <SiteHeader />
-      <Suspense fallback={<Marketplace games={[]} gamesLoading />}><GameCatalog /></Suspense>
+      <Suspense fallback={<Marketplace games={[]} gamesLoading />}>
+        <GameCatalog />
+      </Suspense>
       <SiteFooter />
     </>
   );

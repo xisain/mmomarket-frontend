@@ -91,11 +91,17 @@ export function AuthForm({ mode }: { mode: "login" | "register" | "seller" }) {
           password: fields.password,
         });
       }
-      setFields((previous) => ({ ...previous, password: "", confirm_password: "" }));
+      setFields((previous) => ({
+        ...previous,
+        password: "",
+        confirm_password: "",
+      }));
       router.replace(registering ? "/login" : "/");
       router.refresh();
     } catch (error) {
-      setApiError(error instanceof Error ? error.message : "Permintaan akun gagal.");
+      setApiError(
+        error instanceof Error ? error.message : "Permintaan akun gagal.",
+      );
     } finally {
       setLoading(false);
     }
@@ -214,8 +220,8 @@ export function AuthForm({ mode }: { mode: "login" | "register" | "seller" }) {
               {seller
                 ? "Ubah bekal dan pengalamanmu menjadi peluang. Daftarkan toko dan temukan pelanggan di dunia game favoritmu."
                 : registering
-                ? "Dunia baru, peluang baru. Buat akunmu dan temukan bekal untuk perjalanan berikutnya."
-                : "Duniamu masih menunggu. Temukan bekal baru dan lanjutkan perjalananmu."}
+                  ? "Dunia baru, peluang baru. Buat akunmu dan temukan bekal untuk perjalanan berikutnya."
+                  : "Duniamu masih menunggu. Temukan bekal baru dan lanjutkan perjalananmu."}
             </p>
             <div className="auth-art">
               <LootArt />
@@ -224,16 +230,22 @@ export function AuthForm({ mode }: { mode: "login" | "register" | "seller" }) {
                 {seller
                   ? "YOUR SHOP, YOUR NEXT CHAPTER"
                   : registering
-                  ? "NEW PLAYER, NEW POSSIBILITIES"
-                  : "READY FOR THE NEXT QUEST"}
+                    ? "NEW PLAYER, NEW POSSIBILITIES"
+                    : "READY FOR THE NEXT QUEST"}
               </span>
             </div>
             <div className="auth-story-bottom">
               <ShieldCheck size={21} />
               <span>
-                {seller ? "Daftarkan toko dengan akunmu." : "Satu akun untuk menjelajah."}
+                {seller
+                  ? "Daftarkan toko dengan akunmu."
+                  : "Satu akun untuk menjelajah."}
                 <br />
-                <strong>{seller ? "Tim kami akan meninjau pengajuanmu." : "Satu tempat untuk bertumbuh."}</strong>
+                <strong>
+                  {seller
+                    ? "Tim kami akan meninjau pengajuanmu."
+                    : "Satu tempat untuk bertumbuh."}
+                </strong>
               </span>
             </div>
           </div>
@@ -248,12 +260,22 @@ export function AuthForm({ mode }: { mode: "login" | "register" | "seller" }) {
                 {seller
                   ? "START YOUR SELLER JOURNEY"
                   : registering
-                  ? "JOIN THE ADVENTURE"
-                  : "LET’S PICK UP WHERE YOU LEFT OFF"}
+                    ? "JOIN THE ADVENTURE"
+                    : "LET’S PICK UP WHERE YOU LEFT OFF"}
               </span>
-              <h2>{seller ? "Daftarkan tokomu." : registering ? "Buat akun baru." : "Masuk ke akunmu."}</h2>
+              <h2>
+                {seller
+                  ? "Daftarkan tokomu."
+                  : registering
+                    ? "Buat akun baru."
+                    : "Masuk ke akunmu."}
+              </h2>
               <p>
-                {seller ? "Gunakan akun MMO Market kamu." : registering ? "Sudah punya akun?" : "Belum punya akun?"}{" "}
+                {seller
+                  ? "Gunakan akun MMO Market kamu."
+                  : registering
+                    ? "Sudah punya akun?"
+                    : "Belum punya akun?"}{" "}
                 <Link href={seller || registering ? "/login" : "/register"}>
                   {seller || registering ? "Masuk di sini" : "Daftar gratis"}{" "}
                   <ArrowUpRight size={14} />
@@ -263,7 +285,12 @@ export function AuthForm({ mode }: { mode: "login" | "register" | "seller" }) {
             {seller ? (
               <SellerApplicationForm />
             ) : (
-              <form ref={form} noValidate onSubmit={submit} className="auth-form">
+              <form
+                ref={form}
+                noValidate
+                onSubmit={submit}
+                className="auth-form"
+              >
                 {registering &&
                   field(
                     "display_name",
@@ -297,9 +324,21 @@ export function AuthForm({ mode }: { mode: "login" | "register" | "seller" }) {
                     Daftarkan akun untuk mulai menjelajahi marketplace.
                   </p>
                 )}
-                {apiError && <p role="alert" className="field-error">{apiError}</p>}
-                <button type="submit" className="neo-button full-width" disabled={loading}>
-                  {loading ? "Memproses..." : registering ? "Buat akun" : "Masuk"}
+                {apiError && (
+                  <p role="alert" className="field-error">
+                    {apiError}
+                  </p>
+                )}
+                <button
+                  type="submit"
+                  className="neo-button full-width"
+                  disabled={loading}
+                >
+                  {loading
+                    ? "Memproses..."
+                    : registering
+                      ? "Buat akun"
+                      : "Masuk"}
                   <ArrowRight size={19} />
                 </button>
               </form>
