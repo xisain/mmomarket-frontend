@@ -5,6 +5,7 @@ import { DashboardSkeleton } from "@/components/dashboard-skeleton";
 import Link from "next/link";
 import {
   ArrowLeft,
+  ArrowRight,
   ClipboardList,
   Coins,
   LayoutDashboard,
@@ -17,11 +18,14 @@ import { ApiError } from "@/lib/api";
 import {
   getSellerListings,
   getSellerProfile,
+  getSellerTransactions,
   type SellerListing,
   type SellerProfile,
 } from "@/lib/seller";
 import { formatPrice } from "@/lib/utils/format";
 import "../dashboard.css";
+import { SellerTransaction } from "@/lib/types/seller";
+import { transactionStatuses } from "@/lib/constants/transaction";
 
 const tabs = [
   { id: "overview", title: "Ringkasan", icon: LayoutDashboard },
@@ -49,6 +53,9 @@ type State =
       seller: SellerProfile;
       listings: SellerListing[];
       listingError: boolean;
+
+      transactions: SellerTransaction[];
+      transactionError: boolean;
     };
 
 export function SellerDashboard({ sellerId }: { sellerId: string }) {
@@ -62,7 +69,13 @@ export function SellerDashboard({ sellerId }: { sellerId: string }) {
   );
 }
 
-function SellerLoader({ sellerId, retry }: { sellerId: string; retry: () => void }) {
+function SellerLoader({
+  sellerId,
+  retry,
+}: {
+  sellerId: string;
+  retry: () => void;
+}) {
   const [result, setResult] = useState<Promise<State> | null>(null);
 
   useEffect(() => {
@@ -78,14 +91,21 @@ function SellerLoader({ sellerId, retry }: { sellerId: string; retry: () => void
         }
         let listings: SellerListing[] = [];
         let listingError = false;
+        let transactions: SellerTransaction[] = [];
+        let transactionError = false;
         if (seller.status === "approved") {
           try {
-            listings = await getSellerListings(seller.id, controller.signal);
+            listings = await getSellerListings(controller.signal);
           } catch {
             listingError = true;
           }
+          try {
+            transactions = await getSellerTransactions(controller.signal);
+          } catch {
+            transactionError = true;
+          }
         }
-        return { status: "ready", seller, listings, listingError };
+        return { status: "ready", seller, listings, listingError, transactions, transactionError };
       } catch (error) {
         const login = error instanceof ApiError && error.status === 401;
         return {
@@ -120,7 +140,11 @@ function SellerLoader({ sellerId, retry }: { sellerId: string; retry: () => void
   );
 }
 
-function SellerContent({ result, sellerId, retry }: {
+function SellerContent({
+  result,
+  sellerId,
+  retry,
+}: {
   result: Promise<State>;
   sellerId: string;
   retry: () => void;
@@ -154,7 +178,7 @@ function SellerContent({ result, sellerId, retry }: {
       </main>
     );
 
-  const { seller, listings, listingError } = state;
+  const { seller, listings, listingError, transactions, transactionError } = state;
   const approved = seller.status === "approved";
   const title = tabs.find((item) => item.id === tab)!.title;
   const filtered = listings.filter(
@@ -164,8 +188,9 @@ function SellerContent({ result, sellerId, retry }: {
         .toLowerCase()
         .includes(query.trim().toLowerCase()),
   );
-  const active = listings.filter((item) => item.status === "active").length;
-  const drafts = listings.filter((item) => item.status === "draft").length;
+  const pendingOrders = transactions.filter(
+    (item) => item.status === "paid" || item.status === "processing",
+  ).length;
   const initials = seller.shop_name
     .split(/\s+/)
     .slice(0, 2)
@@ -244,7 +269,7 @@ function SellerContent({ result, sellerId, retry }: {
               tersedia untuk toko yang disetujui.
             </p>
           )}
-          {listingError && (
+          {tab === "listings" && listingError && (
             <div className="preview-alert" role="alert">
               Listing toko gagal dimuat.{" "}
               <button className="dash-inline-link" onClick={retry}>
@@ -257,15 +282,15 @@ function SellerContent({ result, sellerId, retry }: {
               <section className="dash-stats" aria-label="Ringkasan toko">
                 {[
                   {
-                    label: "Listing aktif",
-                    value: approved && !listingError ? String(active) : "—",
-                    note: "Listing berstatus aktif",
+                    label: "Total pesanan",
+                    value: approved && !transactionError ? String(transactions.length) : "—",
+                    note: "Seluruh pesanan yang masuk ke toko",
                     tone: "lavender",
                   },
                   {
-                    label: "Listing draft",
-                    value: approved && !listingError ? String(drafts) : "—",
-                    note: "Listing yang belum diterbitkan",
+                    label: "Pesanan perlu diproses",
+                    value: approved && !transactionError ? String(pendingOrders) : "—",
+                    note: "Sudah dibayar atau sedang diproses",
                     tone: "yellow",
                   },
                   {
@@ -291,14 +316,58 @@ function SellerContent({ result, sellerId, retry }: {
               <div className="dash-overview-grid">
                 <section className="dash-panel dash-tasks">
                   <div className="dash-panel-title">
-                    <div>                      
-                    <span className="section-kicker">YOUR NEXT MOVES</span>
-                    <h2>Prioritas tokomu</h2>
+                    <div>
+                      <span className="section-kicker">LANGKAH SELANJUTNYA</span>
+                      <h2>Prioritas tokomu</h2>
                     </div>
                   </div>
+                  {[
+                    {
+                      title: "Proses pesanan masuk",
+                      text: "Cek pesanan yang sudah dibayar dan selesaikan pengiriman sesuai kesepakatan.",
+                      tab: "orders",
+                      icon: ClipboardList,
+                    },
+                    {
+                      title: "Tindak lanjuti komplain",
+                      text: "Periksa pesanan dalam komplain dan bantu pembeli menemukan solusi.",
+                      tab: "orders",
+                      icon: Store,
+                    },
+                    {
+                      title: "Pastikan stok selalu siap",
+                      text: "Perbarui stok, harga, dan deskripsi produk agar pembeli mendapat informasi yang akurat.",
+                      tab: "listings",
+                      icon: Package,
+                    },
+                  ].map((task) => (
+                    <button
+                      className="dash-task"
+                      key={task.title}
+                      onClick={() => setTab(task.tab)}
+                    >
+                      <span className="dash-task-icon">
+                        <task.icon size={19} />
+                      </span>
+                      <span>
+                        <strong>{task.title}</strong>
+                        <small>{task.text}</small>
+                      </span>
+                      <ArrowRight size={18} />
+                    </button>
+                  ))}
                 </section>
                 <section className="dash-panel dash-note-panel">
-                  <span className="section-kicker"></span>
+                  <span className="section-kicker">CATATAN TOKO</span>
+                  <div className="dash-note-symbol">
+                    <Store size={43} />
+                  </div>
+                  <h2>Pelayanan baik, pembeli kembali.</h2>
+                  <p>
+                    Proses pesanan tepat waktu, sampaikan progres dengan jelas,
+                    dan jaga informasi produk tetap akurat untuk membangun
+                    kepercayaan pembeli.
+                  </p>
                 </section>
               </div>
               {/*<section className="dash-panel">
@@ -328,7 +397,7 @@ function SellerContent({ result, sellerId, retry }: {
               </section>*/}
             </>
           )}
-          {(tab === "overview" || tab === "listings") &&
+          {tab === "listings" &&
             approved &&
             !listingError && (
               <section
@@ -434,7 +503,92 @@ function SellerContent({ result, sellerId, retry }: {
                 </div>
               </section>
             )}
-          {["orders", "earnings", "payouts"].includes(tab) && (
+          {(tab === "overview" || tab === "orders") && approved && (
+            <section className="dash-panel dash-data-panel">
+                <div className="dash-panel-title">
+                  <h2>Pesanan masuk</h2>
+            
+                  <span className="dash-small-label">
+                    {transactionError ? "—" : transactions.length} pesanan
+                  </span>
+                </div>
+            
+                {transactionError ? (
+                  <div className="dash-empty">
+                    <h3>Gagal memuat pesanan</h3>
+                    <button className="neo-button" onClick={retry}>
+                      Coba lagi
+                    </button>
+                  </div>
+                ) : transactions.length === 0 ? (
+                  <div className="dash-empty">
+                    <ClipboardList size={27} />
+                    <h3>Belum ada pesanan</h3>
+                    <p>Pesanan pembeli akan muncul di sini.</p>
+                  </div>
+                ) : (
+                  <div className="dash-table-scroll">
+                    <table className="dash-table">
+                      <thead>
+                        <tr>
+                          <th>Pesanan</th>
+                          <th>Pembeli</th>
+                          <th>Produk</th>
+                          <th>Jumlah</th>
+                          <th>Total</th>
+                          <th>Status</th>
+                          <th>Tanggal</th>
+                        </tr>
+                      </thead>
+            
+                      <tbody>
+                        {transactions.map((order) => (
+                          <tr key={order.id}>
+                            <td>
+                              <span className="dash-row-id">
+                                {order.id.slice(0, 8)}
+                              </span>
+                            </td>
+            
+                            <td>{order.buyer}</td>
+            
+                            <td>
+                              <strong>{order.product}</strong>
+                              <small>{order.game}</small>
+                              <small>{order.server}</small>
+                            </td>
+            
+                            <td>{order.quantity}</td>
+            
+                            <td className="dash-numeric">
+                              {formatPrice(String(order.totalAmount))}
+                            </td>
+            
+                            <td>
+                              <span className={`dash-status ${transactionStatuses[order.status].tone}`}>
+                                {transactionStatuses[order.status].label}
+                              </span>
+                            </td>
+            
+                            <td>
+                              {new Date(order.createdAt).toLocaleDateString(
+                                "id-ID",
+                                {
+                                  day: "2-digit",
+                                  month: "short",
+                                  year: "numeric",
+                                },
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </section>
+          )}
+          {["earnings", "payouts"].includes(tab) && (
             <section className="dash-panel dash-empty">
               <h2>Data {title.toLowerCase()} belum tersedia</h2>
               <p>Data ini belum tersedia dari layanan toko.</p>

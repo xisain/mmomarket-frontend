@@ -16,7 +16,7 @@ test("seller navigation uses the seller ID for every non-pending status", () => 
 test("seller dashboard fetches the session profile and all listing pages without caching", async () => {
   const originalFetch = globalThis.fetch;
   const originalUrl = process.env.NEXT_PUBLIC_API_URL;
-  process.env.NEXT_PUBLIC_API_URL = "http://backend.test/api/v1";
+  process.env.NEXT_PUBLIC_API_URL = "http://localhost:8000/api/v1";
   const profile = { id: "store-1", shop_name: "My Store", status: "approved" };
   const controller = new AbortController();
   const paths: string[] = [];
@@ -33,15 +33,15 @@ test("seller dashboard fetches the session profile and all listing pages without
   };
   try {
     assert.deepEqual(await getSellerProfile(controller.signal), profile);
-    const listings = await getSellerListings(profile.id, controller.signal);
+    const listings = await getSellerListings(controller.signal);
     assert.equal(listings.length, 101);
     assert.equal(listings[100].id, "last-listing");
     assert.deepEqual(paths, ["/seller/profile", "/seller/store-1/listings?limit=100&offset=0", "/seller/store-1/listings?limit=100&offset=100"]);
     globalThis.fetch = async () => new Response(JSON.stringify({ success: false }));
-    await assert.rejects(getSellerProfile(), /Profil seller gagal/);
-    await assert.rejects(getSellerListings(profile.id), /Listing toko gagal/);
+    await assert.rejects(getSellerProfile, /Profil seller gagal/);
+    await assert.rejects(getSellerListings, /Listing toko gagal/);
     globalThis.fetch = async () => new Response("", { status: 403 });
-    await assert.rejects(getSellerListings(profile.id), (error: unknown) => error instanceof ApiError && error.status === 403);
+    await assert.rejects(getSellerListings, (error: unknown) => error instanceof ApiError && error.status === 403);
   } finally {
     globalThis.fetch = originalFetch;
     if (originalUrl === undefined) delete process.env.NEXT_PUBLIC_API_URL;

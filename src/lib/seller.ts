@@ -1,5 +1,29 @@
 import { api } from "@/lib/api";
 import type { Listing } from "@/lib/types/listing";
+import type { SellerOrder, SellerOrdersResponse } from "./types/order";
+import { SellerTransaction } from "./types/seller";
+const baseUri = 'seller'
+function mapOrderToTransaction(sellerOrder: SellerOrder): SellerTransaction {
+  const location = [
+    sellerOrder.listing.server.name,
+    sellerOrder.listing.region.name,
+  ].filter(Boolean);
+
+  return {
+    id: sellerOrder.id,
+    product: sellerOrder.listing.name,
+    game: sellerOrder.listing.game.name,
+    category: sellerOrder.listing.category.name,
+    buyer: sellerOrder.buyer.name,
+    server: location.join(" · ") || "—",
+    quantity: sellerOrder.quantity,
+    unitPrice: sellerOrder.unit_price,
+    totalAmount: sellerOrder.total_amount,
+    currency: sellerOrder.currency,
+    status: sellerOrder.status,
+    createdAt: sellerOrder.created_at,
+  };
+}
 
 export type SellerStatus = "pending" | "approved" | "rejected" | "suspended";
 export type SellerSummary = {
@@ -8,6 +32,7 @@ export type SellerSummary = {
   slug: string;
   status: SellerStatus;
 };
+
 export type SellerProfile = SellerSummary & {
   owner_id: string;
   description: string | null;
@@ -25,7 +50,7 @@ export function sellerDashboardHref(seller?: SellerSummary | null) {
 
 export async function getSellerProfile(signal?: AbortSignal) {
   const response = await api<{ success: boolean; data: SellerProfile }>(
-    "/seller/profile", { signal, cache: "no-store" },
+    `/${baseUri}/profile`, { signal, cache: "no-store" },
   );
   if (!response?.success || !response.data?.id) {
     throw new Error("Profil seller gagal dimuat.");
@@ -33,12 +58,12 @@ export async function getSellerProfile(signal?: AbortSignal) {
   return response.data;
 }
 
-export async function getSellerListings(sellerId: string, signal?: AbortSignal) {
+export async function getSellerListings( signal?: AbortSignal) {
   const listings: SellerListing[] = [];
   // The API has no total count; fetch all pages before calculating store totals.
   for (let offset = 0; ; offset += 100) {
     const response = await api<{ success: boolean; data: SellerListing[] }>(
-      `/seller/${encodeURIComponent(sellerId)}/listings?limit=100&offset=${offset}`,
+      `/${baseUri}/listings?limit=100&offset=${offset}`,
       { signal, cache: "no-store" },
     );
     if (!response?.success || !Array.isArray(response.data)) {
@@ -57,11 +82,32 @@ export type SellerInput = {
 
 export async function applyForSeller(input: SellerInput) {
   const response = await api<{ success: boolean; message?: string }>(
-    "/seller/applications",
+    `${baseUri}/applications`,
     { method: "POST", json: input },
   );
 
   if (!response || response.success !== true) {
     throw new Error(response?.message || "Pengajuan seller gagal dikirim.");
   }
+}
+
+
+
+export async function getSellerTransactions(
+  signal?: AbortSignal,
+): Promise<SellerTransaction[]> {
+  const response = await api<SellerOrdersResponse>(`${baseUri}/orders`, {
+    signal,
+    cache: "no-store",
+  });
+
+  console.log((response.orders ?? []).map(mapOrderToTransaction));
+  if (
+    !response ||
+    !("orders" in response) ||
+    (response.orders !== null && !Array.isArray(response.orders))
+  ) {
+    throw new Error("Format respons transaksi tidak sesuai.");
+  }
+  return (response.orders ?? []).map(mapOrderToTransaction);
 }

@@ -6,6 +6,7 @@ import { ArrowLeft, ArrowRight, ClipboardList, Search, SlidersHorizontal } from 
 import type { BuyerTransaction } from "@/lib/types/buyer";
 import { transactionStatuses } from "@/lib/constants/transaction";
 import { formatBuyerDate } from "@/lib/utils/format";
+import { Payment } from "@/components/profile/payment";
 
 function formatTransactionPrice(amount: number, currency: string) {
   return new Intl.NumberFormat("id-ID", {
@@ -93,6 +94,11 @@ export function Transaction({ transactions }: { transactions: BuyerTransaction[]
                     <strong>{formatTransactionPrice(item.totalAmount, item.currency)}</strong>
                   </div>
                 </div>
+                {item.status === "pending_payment" && (
+                  <div className="buyer-order-actions">
+                    <Payment transaction={item} />
+                  </div>
+                )}
                 <details className="buyer-order-detail">
                   <summary>Detail transaksi</summary>
                   <dl>
