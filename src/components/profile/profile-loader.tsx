@@ -3,7 +3,7 @@
 import { Suspense, startTransition, use, useEffect, useState } from "react";
 import { getBuyerProfile } from "@/lib/profile";
 import { getBuyerTransactions } from "@/lib/transaction";
-import { DashboardSkeleton } from "@/components/dashboard-skeleton";
+import { DashboardSkeleton } from "@/components/dashboard/skeleton";
 import { BuyerProfile } from "./buyer-profile";
 import type { BuyerTransaction, Buyer } from "@/lib/types/buyer";
 

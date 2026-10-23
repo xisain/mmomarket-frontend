@@ -19,7 +19,7 @@ import {
   Swords,
   X,
 } from "lucide-react";
-import { GameArt, LootArt } from "@/components/game-art";
+import { GameArt, LootArt } from "@/components/game/art";
 import {
   getListingGame,
   getListingCategory,
@@ -231,6 +231,7 @@ export function Marketplace({ games, gamesError = false, gamesLoading = false, d
             <span className="sample-note">
               <span /> Katalog game
             </span>
+            <Link className="text-link" href="/games">Lihat semua game <ArrowRight size={17} /></Link>
           </div>
           <form
             className="catalog-search"
@@ -272,7 +273,7 @@ export function Marketplace({ games, gamesError = false, gamesLoading = false, d
               <Link
                 className="game-card"
                 key={game.id}
-                href={`/games/${encodeURIComponent(game.slug)}`}
+                href={`/game/${encodeURIComponent(game.slug)}`}
               >
                 <div className="game-image">
                   <GameArt variant={getGameArtwork(game.slug)} />
@@ -285,7 +286,7 @@ export function Marketplace({ games, gamesError = false, gamesLoading = false, d
                   <h3>{game.name}</h3>
                   <p>{game.publisher}</p>
                   <div>
-                    <span>Lihat penawaran</span>
+                    <span>Pilih kategori</span>
                     <ArrowRight size={17} />
                   </div>
                 </div>

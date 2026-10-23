@@ -1,7 +1,7 @@
 "use client";
 
-import { Suspense, startTransition, use, useEffect, useState } from "react";
-import { DashboardSkeleton } from "@/components/dashboard-skeleton";
+import { Suspense, startTransition, use, useEffect, useId, useRef, useState } from "react";
+import { DashboardSkeleton } from "@/components/dashboard/skeleton";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -10,8 +10,12 @@ import {
   Coins,
   LayoutDashboard,
   Package,
+  Pencil,
+  Plus,
   Store,
+  Trash2,
   Wallet,
+  X,
 } from "lucide-react";
 import { Brand } from "@/components/brand";
 import { ApiError } from "@/lib/api";
@@ -26,6 +30,8 @@ import { formatPrice } from "@/lib/utils/format";
 import "../dashboard.css";
 import { SellerTransaction } from "@/lib/types/seller";
 import { transactionStatuses } from "@/lib/constants/transaction";
+import next from "next";
+import { URL } from "node:url";
 
 const tabs = [
   { id: "overview", title: "Ringkasan", icon: LayoutDashboard },
@@ -45,6 +51,15 @@ const listingStatuses = {
   active: "Aktif",
   sold: "Terjual",
   archived: "Diarsipkan",
+};
+const listingActionLabels = {
+  add: "Tambah listing",
+  edit: "Edit listing",
+  delete: "Hapus listing",
+};
+type ListingAction = {
+  action: keyof typeof listingActionLabels;
+  listing?: SellerListing;
 };
 type State =
   | { status: "error"; message: string; login: boolean }
@@ -149,10 +164,19 @@ function SellerContent({
   sellerId: string;
   retry: () => void;
 }) {
+
   const state = use(result);
   const [tab, setTab] = useState("overview");
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState("all");
+  const [listingAction, setListingAction] = useState<ListingAction | null>(null);
+  const listingDialog = useRef<HTMLDialogElement>(null);
+  const listingDialogId = useId();
+
+  function openListingPlaceholder(action: ListingAction) {
+    setListingAction(action);
+    listingDialog.current?.showModal();
+  }
 
   if (state.status !== "ready")
     return (
@@ -406,10 +430,15 @@ function SellerContent({
               >
                 <div className="dash-panel-title">
                   <h2 id="seller-listings-title">Listing toko</h2>
-                  <span className="dash-small-label">
-                    {listings.length} listing
-                  </span>
+                  <div className="seller-listing-header-actions">
+                    <span className="dash-small-label">{listings.length} listing</span>
+                  <Link href={`/seller/${sellerId}/create`}
+                    className="neo-button small">
+                      <Plus size={17} aria-hidden="true" /> Tambah listing
+                    </Link>
+                  </div>
                 </div>
+                <p className="seller-listing-placeholder-note">Tambah, edit, dan hapus listing masih berupa placeholder untuk pengembangan berikutnya.</p>
                 <div className="dash-table-toolbar">
                   <label className="dash-search">
                     <span className="sr-only">Cari listing</span>
@@ -450,6 +479,7 @@ function SellerContent({
                         <th scope="col" className="dash-numeric">
                           Harga per paket
                         </th>
+                        <th scope="col">Aksi</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -474,6 +504,16 @@ function SellerContent({
                           </td>
                           <td className="dash-numeric">
                             {formatPrice(String(item.price))}
+                          </td>
+                          <td>
+                            <div className="seller-listing-row-actions">
+                              <button type="button" className="seller-listing-action" aria-label={`Edit ${item.name}`} aria-haspopup="dialog" onClick={() => openListingPlaceholder({ action: "edit", listing: item })}>
+                                <Pencil size={15} aria-hidden="true" /> Edit
+                              </button>
+                              <button type="button" className="seller-listing-action seller-listing-delete" aria-label={`Hapus ${item.name}`} aria-haspopup="dialog" onClick={() => openListingPlaceholder({ action: "delete", listing: item })}>
+                                <Trash2 size={15} aria-hidden="true" /> Hapus
+                              </button>
+                            </div>
                           </td>
                         </tr>
                       ))}
@@ -595,6 +635,34 @@ function SellerContent({
             </section>
           )}
         </main>
+        <dialog
+          ref={listingDialog}
+          className="listing-dialog dash-dialog seller-listing-placeholder"
+          aria-labelledby={`${listingDialogId}-title`}
+          aria-describedby={`${listingDialogId}-description`}
+          onClose={() => setListingAction(null)}
+          onClick={(event) => { if (event.target === listingDialog.current) listingDialog.current.close(); }}
+        >
+          {listingAction && (
+            <>
+              <div className="dialog-heading">
+                <span className="section-kicker">SEGERA TERSEDIA</span>
+                <button type="button" className="icon-button" aria-label="Tutup placeholder" onClick={() => listingDialog.current?.close()}><X size={20} /></button>
+              </div>
+              <h2 id={`${listingDialogId}-title`}>{listingActionLabels[listingAction.action]}</h2>
+              {listingAction.listing && <p className="seller-listing-placeholder-product">{listingAction.listing.name}</p>}
+              <p id={`${listingDialogId}-description`}>
+                {listingAction.action === "add"
+                  ? "Form untuk menambahkan listing baru akan tersedia di sini."
+                  : listingAction.action === "edit"
+                    ? "Form untuk mengubah detail, harga, dan stok listing akan tersedia di sini."
+                    : "Fitur penghapusan listing akan tersedia di sini."}
+                {" "}Ini masih placeholder. Belum ada data listing yang ditambahkan, diubah, atau dihapus.
+              </p>
+              <button type="button" className="neo-button secondary full-width" onClick={() => listingDialog.current?.close()}>Kembali ke listing</button>
+            </>
+          )}
+        </dialog>
       </div>
     </div>
   );

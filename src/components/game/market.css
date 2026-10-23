@@ -1,0 +1,1140 @@
+/* =========================================
+   MMO MARKET — NEOBRUTALISM GAME PAGES
+   ========================================= */
+
+.neo-game-page {
+  --neo-bg: #fffdf5;
+  --neo-surface: #ffffff;
+  --neo-ink: #171717;
+  --neo-muted: #525252;
+  --neo-purple: #c4b5fd;
+  --neo-yellow: #fde047;
+  --neo-cyan: #67e8f9;
+  --neo-pink: #fda4af;
+  --neo-green: #bbf7d0;
+  --neo-border: 2px solid var(--neo-ink);
+  --neo-shadow: 5px 5px 0 var(--neo-ink);
+}
+
+.neo-game-page,
+.neo-offers {
+  background: var(--neo-bg);
+  color: var(--neo-ink);
+}
+
+.neo-game-page :is(h1, h2, h3, p, a, dd) {
+  overflow-wrap: anywhere;
+}
+
+.neo-game-page :is(button, a, input, select):focus-visible,
+.neo-search:focus-within {
+  outline: 3px solid var(--ring, #1d4ed8);
+  outline-offset: 4px;
+}
+
+/* Game heading and hero */
+
+.neo-game-heading {
+  padding-block: 24px 0;
+}
+
+.neo-game-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.neo-game-breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.neo-game-breadcrumb [aria-current="page"] {
+  color: var(--neo-muted);
+}
+
+.neo-game-hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 24px;
+  overflow: hidden;
+  background: var(--neo-purple);
+  border: 3px solid var(--neo-ink);
+  border-radius: 12px;
+  box-shadow: var(--neo-shadow);
+}
+
+.neo-game-hero-art {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 144px;
+  width: 144px;
+  height: 144px;
+  overflow: hidden;
+  border: 3px solid var(--neo-ink);
+  border-radius: 8px;
+  background: var(--neo-yellow);
+  box-shadow: 5px 5px 0 var(--neo-ink);
+}
+
+.neo-game-hero-art > * {
+  width: 100%;
+  height: 100%;
+}
+
+.neo-game-hero-content {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  min-width: 0;
+}
+
+.neo-game-hero-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 10px;
+  background: white;
+  border: var(--neo-border);
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.neo-game-hero h1 {
+  margin: 14px 0 10px;
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: -0.05em;
+  color: var(--neo-ink);
+}
+
+.neo-game-description {
+  max-width: 650px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--neo-ink);
+}
+
+.neo-game-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 14px;
+}
+
+.neo-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 11px;
+  border: var(--neo-border);
+  border-radius: 5px;
+  background: white;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.neo-status-badge.is-active {
+  background: var(--neo-green);
+}
+
+.neo-status-badge.is-inactive {
+  background: var(--neo-pink);
+}
+
+.neo-region-badge {
+  background: var(--neo-yellow);
+}
+
+/* Shared section heading */
+
+.neo-game-categories {
+  padding-block: 48px 64px;
+}
+
+.neo-section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+  margin-bottom: 26px;
+}
+
+.neo-section-kicker {
+  display: inline-block;
+  margin-bottom: 12px;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+}
+
+.neo-section-heading h2 {
+  margin: 0 0 10px;
+  font-size: clamp(24px, 2.5vw, 32px);
+  line-height: 1.16;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+}
+
+.neo-section-heading p {
+  max-width: 600px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--neo-muted);
+}
+
+.neo-highlight {
+  padding: 0 5px;
+  background: var(--neo-yellow);
+  box-decoration-break: clone;
+}
+
+.neo-count-badge {
+  flex-shrink: 0;
+  padding: 10px 13px;
+  border: var(--neo-border);
+  background: white;
+  box-shadow: 3px 3px 0 var(--neo-ink);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+/* Category cards */
+
+.neo-category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
+  gap: 20px;
+}
+
+.neo-category-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 220px;
+  padding: 20px;
+  border: 3px solid var(--neo-ink);
+  border-radius: 10px;
+  box-shadow: var(--neo-shadow);
+  color: var(--neo-ink);
+  text-decoration: none;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.neo-category-card:hover {
+  transform: translate(3px, 3px);
+  box-shadow: 2px 2px 0 var(--neo-ink);
+}
+
+.neo-category-card:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 5px;
+}
+
+.neo-category-yellow { background: var(--neo-yellow); }
+.neo-category-purple { background: var(--neo-purple); }
+.neo-category-cyan { background: var(--neo-cyan); }
+.neo-category-pink { background: var(--neo-pink); }
+.neo-category-green { background: var(--neo-green); }
+
+.neo-category-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.neo-category-icon {
+  display: grid;
+  place-items: center;
+  width: 53px;
+  height: 53px;
+  border: var(--neo-border);
+  border-radius: 7px;
+  background: white;
+  box-shadow: 3px 3px 0 var(--neo-ink);
+}
+
+.neo-category-arrow {
+  transition: transform 160ms ease;
+}
+
+.neo-category-card:hover .neo-category-arrow {
+  transform: translate(3px, -3px);
+}
+
+.neo-category-card-content {
+  flex: 1;
+}
+
+.neo-category-card h3 {
+  margin: 0 0 9px;
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.neo-category-card p {
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--neo-ink);
+}
+
+.neo-category-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding-top: 11px;
+  border-top: 2px solid var(--neo-ink);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.neo-empty,
+.neo-loading {
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.neo-empty {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 12px;
+  border: var(--neo-border);
+  background: white;
+}
+
+/* Category marketplace */
+.neo-catalog-section {
+  padding-block: 40px 64px;
+}
+
+
+.neo-offers {
+  min-height: 60vh;
+}
+
+.neo-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.neo-back-link:hover {
+  text-decoration: underline;
+}
+
+.neo-category-tabs {
+  display: flex;
+  gap: 11px;
+  margin: 0 -5px 24px;
+  padding: 5px 5px 10px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.neo-category-tabs a {
+  flex-shrink: 0;
+  padding: 10px 17px;
+  border: var(--neo-border);
+  border-radius: 5px;
+  background: white;
+  color: var(--neo-ink);
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.neo-category-tabs a:hover {
+  background: var(--neo-yellow);
+}
+
+.neo-category-tabs a.active {
+  background: var(--neo-purple);
+  box-shadow: 3px 3px 0 var(--neo-ink);
+}
+
+.neo-market-layout {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  align-items: start;
+  gap: 24px;
+}
+
+/* Sidebar */
+
+.neo-filter-sidebar,
+.neo-filter-drawer {
+  padding: 20px;
+  border: 3px solid var(--neo-ink);
+  border-radius: 9px;
+  background: white;
+  box-shadow: var(--neo-shadow);
+}
+
+.neo-filter-sidebar {
+  position: sticky;
+  top: 20px;
+}
+
+.neo-filter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--neo-ink);
+}
+
+.neo-filter-header h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.neo-reset {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border: 0;
+  min-height: 36px;
+  padding: 4px;
+  background: transparent;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.neo-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 20px;
+}
+
+.neo-filter-group label,
+.neo-filter-label {
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.neo-filter-group select,
+.neo-price-inputs input {
+  width: 100%;
+  min-width: 0;
+  min-height: 43px;
+  padding: 10px;
+  border: var(--neo-border);
+  border-radius: 5px;
+  background: var(--neo-bg);
+  color: var(--neo-ink);
+  font-size: 12px;
+}
+
+.neo-price-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+/* Toolbar */
+
+.neo-market-content {
+  min-width: 0;
+}
+
+.neo-market-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.neo-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+  min-height: 48px;
+  padding: 0 13px;
+  border: var(--neo-border);
+  border-radius: 5px;
+  background: white;
+  box-shadow: 3px 3px 0 var(--neo-ink);
+}
+
+.neo-search input {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--neo-ink);
+  font-size: 13px;
+}
+
+.neo-search button {
+  display: grid;
+  place-items: center;
+  background: transparent;
+  cursor: pointer;
+}
+
+.neo-sort {
+  min-height: 48px;
+  max-width: 180px;
+  padding: 0 12px;
+  border: var(--neo-border);
+  border-radius: 5px;
+  background: var(--neo-yellow);
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.neo-mobile-filter-button {
+  display: none;
+}
+
+.neo-result-count {
+  margin-bottom: 18px;
+  font-size: 12px;
+  color: var(--neo-muted);
+}
+
+/* Listing cards */
+
+.neo-listing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
+  gap: 20px;
+}
+
+.neo-listing-card {
+  min-width: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border: var(--neo-border);
+  border-radius: 9px;
+  background: white;
+  box-shadow: 4px 4px 0 var(--neo-ink);
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.neo-listing-card:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--neo-ink);
+}
+
+.neo-listing-art {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-bottom: var(--neo-border);
+  background: var(--neo-purple);
+  cursor: pointer;
+}
+
+.neo-listing-art > :first-child {
+  width: 100%;
+  height: 100%;
+}
+
+.neo-listing-category {
+  position: absolute;
+  bottom: 9px;
+  left: 9px;
+  padding: 5px 8px;
+  border: 2px solid var(--neo-ink);
+  border-radius: 3px;
+  background: var(--neo-yellow);
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.neo-listing-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 9px;
+  padding: 14px;
+}
+
+.neo-listing-game {
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--neo-muted);
+}
+
+.neo-listing-body h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1.4;
+}
+
+.neo-listing-body h3 button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+
+.neo-listing-body h3 button:hover {
+  text-decoration: underline;
+}
+
+.neo-listing-region {
+  font-size: 11px;
+  color: var(--neo-muted);
+}
+
+.neo-listing-seller {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.neo-listing-seller > span:last-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.neo-seller-avatar {
+  display: grid;
+  flex: 0 0 26px;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border: 2px solid var(--neo-ink);
+  border-radius: 4px;
+  background: var(--neo-cyan);
+  font-weight: 900;
+}
+
+.neo-listing-price {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 7px;
+  margin-top: auto;
+  padding-top: 13px;
+  border-top: 2px solid var(--neo-ink);
+}
+
+.neo-listing-price small {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 10px;
+  color: var(--neo-muted);
+}
+
+.neo-listing-price strong {
+  display: block;
+  font-size: 17px;
+  font-weight: 900;
+  overflow-wrap: anywhere;
+}
+
+.neo-listing-price button {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: var(--neo-border);
+  border-radius: 4px;
+  background: var(--neo-yellow);
+  cursor: pointer;
+}
+
+.neo-listing-empty {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 12px;
+  padding: 55px 20px;
+  border: var(--neo-border);
+  background: white;
+  text-align: center;
+}
+
+.neo-listing-empty h3 {
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.neo-listing-empty p,
+.neo-disclaimer {
+  color: var(--neo-muted);
+  font-size: 12px;
+}
+
+.neo-filter-done {
+  padding: 12px 16px;
+  border: var(--neo-border);
+  border-radius: 5px;
+  background: var(--neo-yellow);
+  box-shadow: 3px 3px 0 var(--neo-ink);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.neo-disclaimer {
+  margin-top: 26px;
+}
+
+/* Listing preview dialog */
+
+.neo-listing-dialog {
+  max-width: min(92vw, 560px);
+  max-height: 90dvh;
+  overflow-y: auto;
+  border: 3px solid var(--neo-ink);
+  border-radius: 10px;
+  background: white;
+  box-shadow: var(--neo-shadow);
+  color: var(--neo-ink);
+}
+
+.neo-listing-dialog::backdrop {
+  background: rgb(0 0 0 / 65%);
+}
+
+/* Responsive */
+
+@media (max-width: 1100px) {
+  .neo-category-grid {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
+  }
+
+  .neo-market-layout {
+    gap: 20px;
+  }
+
+}
+
+@media (max-width: 900px) {
+  .neo-game-heading {
+    padding-top: 16px;
+  }
+
+  .neo-game-hero {
+    align-items: flex-start;
+    gap: 16px;
+    min-height: 0;
+    padding: 18px;
+    box-shadow: 4px 4px 0 var(--neo-ink);
+  }
+
+  .neo-game-hero-art {
+    flex-basis: 100px;
+    width: 100px;
+    height: 100px;
+  }
+
+  .neo-game-hero h1 {
+    font-size: clamp(22px, 5vw, 30px);
+  }
+
+  .neo-game-description {
+    font-size: 12px;
+  }
+
+  .neo-game-categories {
+    padding-block: 32px 40px;
+  }
+
+  .neo-section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .neo-category-grid {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
+    gap: 16px;
+  }
+
+  .neo-category-card {
+    min-height: 205px;
+    padding: 13px;
+    box-shadow: 3px 3px 0 var(--neo-ink);
+  }
+
+  .neo-category-card h3 {
+    font-size: 18px;
+  }
+
+  .neo-category-card p {
+    font-size: 11px;
+  }
+
+  .neo-market-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .neo-filter-sidebar {
+    display: none;
+  }
+
+  .neo-mobile-filter-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 44px;
+    padding: 0 12px;
+    border: var(--neo-border);
+    border-radius: 5px;
+    background: var(--neo-purple);
+    font-weight: 900;
+    cursor: pointer;
+  }
+
+  .neo-market-toolbar {
+    flex-wrap: wrap;
+  }
+
+  .neo-search {
+    flex-basis: 100%;
+  }
+
+  .neo-sort {
+    flex: 1;
+    max-width: none;
+  }
+
+  .neo-listing-grid {
+    gap: 16px;
+  }
+
+  .neo-listing-body {
+    padding: 10px;
+  }
+
+  .neo-listing-body h3 {
+    font-size: 12px;
+  }
+
+  .neo-listing-price strong {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 420px) {
+  .neo-game-hero {
+    flex-direction: column;
+  }
+
+  .neo-game-hero-art {
+    flex-basis: auto;
+    width: 105px;
+    height: 105px;
+  }
+
+  .neo-listing-price {
+    flex-wrap: wrap;
+  }
+}
+
+/* Shared controls used by both filter presentations. */
+.neo-price-fieldset {
+  min-width: 0;
+  margin: 24px 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.neo-price-fieldset legend {
+  margin-bottom: 12px;
+  padding: 0;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.neo-price-inputs label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 11px;
+}
+
+.neo-search input {
+  min-height: 44px;
+}
+
+.neo-search button,
+.neo-close-button {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+}
+
+.neo-filter-drawer {
+  position: fixed;
+  inset: 0 0 0 auto;
+  width: min(400px, calc(100vw - 24px));
+  max-width: none;
+  height: 100dvh;
+  max-height: 100dvh;
+  margin: 0;
+  padding: 24px;
+  border-radius: 12px 0 0 12px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  color: var(--neo-ink);
+}
+
+.neo-filter-drawer::backdrop {
+  background: rgb(0 0 0 / 65%);
+}
+
+body:has(.neo-filter-drawer[open]) {
+  overflow: hidden;
+}
+
+.neo-drawer-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.neo-drawer-heading h2 {
+  font-size: 20px;
+}
+
+.neo-filter-drawer .neo-filter-done {
+  width: 100%;
+  margin-top: 28px;
+}
+
+.neo-category-card:active,
+.neo-listing-card:active {
+  transform: translate(4px, 4px);
+  box-shadow: none;
+}
+
+@media (max-width: 600px) {
+  .neo-category-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .neo-catalog-section {
+    padding-block: 28px 40px;
+  }
+
+  .neo-game-hero {
+    padding: 16px;
+  }
+
+  .neo-game-hero-art {
+    flex-basis: 88px;
+    width: 88px;
+    height: 88px;
+  }
+
+  .neo-game-hero-kicker {
+    font-size: 10px;
+  }
+
+  .neo-game-hero h1 {
+    font-size: 24px;
+  }
+
+  .neo-status-badge {
+    padding: 5px 8px;
+    font-size: 11px;
+  }
+
+  .neo-listing-region,
+  .neo-listing-game {
+    font-size: 10px;
+  }
+
+  .neo-listing-price {
+    flex-wrap: wrap;
+  }
+
+  .neo-category-tabs a {
+    min-height: 44px;
+  }
+
+  .neo-filter-group select,
+  .neo-price-inputs input,
+  .neo-search input {
+    font-size: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .neo-category-card,
+  .neo-listing-card,
+  .neo-category-arrow {
+    transition: none;
+    transform: none !important;
+  }
+}
+
+/* Game directory and product detail reuse the marketplace palette. */
+.neo-all-games,
+.neo-product-page { padding-block: 28px 64px; }
+.neo-catalog-banner { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 28px; margin-bottom: 32px; border: var(--neo-border); border-radius: 10px; background: var(--neo-purple); box-shadow: var(--neo-shadow); }
+.neo-catalog-banner h1 { font-size: clamp(28px, 3.5vw, 44px); }
+.neo-catalog-banner p { margin-top: 14px; font-size: 14px; max-width: 580px; }
+.neo-catalog-banner .neo-count-badge { display: inline-flex; align-items: center; gap: 10px; }
+.neo-all-games-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); gap: 24px; }
+.neo-catalog-game-card { min-width: 0; display: flex; flex-direction: column; border: var(--neo-border); border-radius: 10px; overflow: hidden; background: var(--neo-surface); box-shadow: 4px 4px 0 var(--neo-ink); transition: transform 160ms, box-shadow 160ms; }
+.neo-catalog-game-card:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--neo-ink); }
+.neo-catalog-game-art { position: relative; aspect-ratio: 16 / 10; overflow: hidden; border-bottom: var(--neo-border); }
+.neo-catalog-game-art > svg { display: block; width: 100%; height: 100%; }
+.neo-catalog-game-art .neo-status-badge { position: absolute; top: 10px; left: 10px; padding: 4px 8px; font-size: 10px; }
+.neo-catalog-game-copy { display: flex; flex: 1; flex-direction: column; padding: 18px; }
+.neo-catalog-game-copy h2 { font-size: 20px; }
+.neo-catalog-game-copy p { color: var(--neo-muted); font-size: 12px; margin-block: 10px 20px; }
+.neo-catalog-game-copy > span { display: flex; align-items: center; justify-content: space-between; padding-top: 12px; margin-top: auto; border-top: var(--neo-border); font-size: 12px; font-weight: 800; }
+.neo-listing-body h3 a:hover { text-decoration: underline; }
+.neo-listing-detail-link { display: grid; flex-shrink: 0; place-items: center; width: 44px; height: 44px; border: var(--neo-border); border-radius: 5px; background: var(--neo-yellow); }
+.neo-quick-preview { display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 38px; padding: 6px; border: var(--neo-border); border-radius: 6px; background: var(--neo-bg); font-size: 11px; font-weight: 700; }
+.neo-listing-art:focus-visible { outline-offset: -5px; }
+.neo-product-overview { display: grid; grid-template-columns: minmax(0, 1fr) 380px; align-items: start; gap: 28px; }
+.neo-product-gallery { min-width: 0; }
+.neo-product-image { overflow: hidden; height: clamp(280px, 32vw, 440px); border: 2px solid var(--neo-ink); border-radius: 12px; background: var(--neo-purple); box-shadow: var(--neo-shadow); }
+.neo-product-image > svg { display: block; width: 100%; height: 100%; }
+.neo-product-gallery > p { display: flex; align-items: center; gap: 8px; color: var(--neo-muted); margin-top: 16px; font-size: 12px; }
+.neo-product-info { position: sticky; top: 24px; min-width: 0; padding: 18px; border: var(--neo-border); border-radius: 10px; background: var(--neo-surface); box-shadow: var(--neo-shadow); }
+.neo-product-category { display: inline-block; font-size: 11px; font-weight: 800; padding: 5px 8px; margin-bottom: 10px; border: var(--neo-border); border-radius: 6px; background: var(--neo-purple); }
+.neo-product-info h1 { font-size: clamp(21px, 2vw, 26px); line-height: 1.2; }
+.neo-product-seller { display: flex; align-items: center; gap: 8px; margin-block: 12px; }
+.neo-product-seller small { display: block; color: var(--neo-muted); font-size: 10px; }
+.neo-product-seller strong { font-size: 13px; }
+.neo-product-seller .neo-seller-avatar { flex-basis: 32px; width: 32px; height: 32px; }
+.neo-product-unit-price { padding: 12px; border: var(--neo-border); border-radius: 8px; background: var(--neo-yellow); }
+.neo-product-unit-price strong { display: block; font-size: 25px; font-weight: 900; }
+.neo-product-unit-price span { display: block; font-size: 12px; margin-top: 4px; }
+.neo-product-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 16px; margin-block: 14px; }
+.neo-product-facts > div { display: block; padding: 0; border: 0; }
+.neo-product-facts dt { font-size: 10px; margin-bottom: 3px; }
+.neo-product-facts dd { text-align: left; font-size: 11px; line-height: 1.5; }
+.neo-purchase-form { padding-top: 6px; }
+.neo-quantity-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 10px; font-size: 12px; }
+.neo-quantity-heading label { font-weight: 800; }
+.neo-quantity-heading span { color: var(--neo-muted); font-size: 11px; }
+.neo-quantity-control { display: flex; width: min(100%, 220px); border: var(--neo-border); border-radius: 8px; overflow: hidden; }
+.neo-quantity-control button { display: grid; flex: 0 0 44px; place-items: center; border: 0; padding: 0; background: var(--neo-purple); }
+.neo-quantity-control input { width: 100%; min-width: 0; min-height: 44px; border: 0; border-inline: var(--neo-border); padding: 8px; text-align: center; font-weight: 800; font-size: 16px; background: var(--neo-bg); appearance: textfield; }
+.neo-quantity-control input::-webkit-inner-spin-button { appearance: none; }
+.neo-purchase-unit { color: var(--neo-muted); font-size: 11px; margin-top: 8px; }
+.neo-purchase-total { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-block: 14px 12px; padding-top: 12px; border-top: var(--neo-border); font-size: 13px; }
+.neo-purchase-total strong { font-size: 21px; }
+.neo-buy-button { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 48px; border: var(--neo-border); border-radius: 8px; background: var(--neo-yellow); box-shadow: 3px 3px 0 var(--neo-ink); font-weight: 900; transition: transform 160ms, box-shadow 160ms; }
+.neo-buy-button:not(:disabled):hover { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--neo-ink); }
+.neo-purchase-note { color: var(--neo-muted); font-size: 10px; line-height: 1.6; margin-top: 12px; }
+.neo-product-description { margin-block: 40px 48px; padding: 26px; border: var(--neo-border); border-radius: 10px; background: var(--neo-surface); box-shadow: 4px 4px 0 var(--neo-ink); }
+.neo-product-description h2 { font-size: 24px; margin-bottom: 18px; }
+.neo-product-description p { max-width: 75ch; white-space: pre-wrap; font-size: 14px; line-height: 1.9; }
+.neo-recommendation-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); gap: 24px; }
+.neo-product-recommendations .neo-back-link { margin-bottom: 0; }
+@media (max-width: 1100px) {
+  .neo-all-games-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); }
+  .neo-product-overview { gap: 24px; }
+  .neo-recommendation-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); }
+}
+@media (max-width: 800px) {
+  .neo-product-overview { grid-template-columns: minmax(0, 1fr); }
+  .neo-product-info { position: static; }
+  .neo-product-gallery { width: 100%; min-width: 0; }
+  .neo-product-image { aspect-ratio: 4 / 3; }
+}
+@media (max-width: 600px) {
+  .neo-all-games, .neo-product-page { padding-block: 20px 40px; }
+  .neo-catalog-banner { align-items: start; flex-direction: column; padding: 20px; margin-bottom: 26px; }
+  .neo-all-games-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .neo-catalog-game-copy { padding: 12px; }
+  .neo-catalog-game-copy h2 { font-size: 16px; }
+  .neo-catalog-game-copy p { font-size: 11px; }
+  .neo-catalog-game-copy > span { font-size: 11px; }
+  .neo-product-info { padding: 18px; }
+  .neo-product-description { padding: 20px; margin-block: 28px 36px; }
+  .neo-recommendation-grid { gap: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .neo-catalog-game-card, .neo-buy-button { transition: none; transform: none !important; }
+}
+
+/* Compact artwork gallery; all views reuse the current game illustration. */
+.neo-gallery-stage { position: relative; }
+.neo-product-gallery .neo-product-image { box-shadow: 4px 4px 0 var(--neo-ink); }
+.neo-gallery-left > svg { transform: scale(1.8); transform-origin: 20% 65%; }
+.neo-gallery-right > svg { transform: scale(1.8); transform-origin: 80% 60%; }
+.neo-gallery-previous,
+.neo-gallery-next { position: absolute; top: 50%; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: var(--neo-border); border-radius: 6px; background: var(--neo-surface); transform: translateY(-50%); box-shadow: 2px 2px 0 var(--neo-ink); }
+.neo-gallery-previous { left: 12px; }
+.neo-gallery-next { right: 12px; }
+.neo-gallery-counter { position: absolute; bottom: 12px; right: 12px; padding: 3px 8px; border: var(--neo-border); border-radius: 5px; background: var(--neo-surface); font-size: 11px; font-weight: 800; }
+.neo-gallery-thumbnails { display: flex; gap: 12px; margin-top: 16px; padding: 4px; }
+.neo-gallery-thumbnail { display: block; flex: 0 0 72px; width: 72px; height: 56px; padding: 0; overflow: hidden; border: var(--neo-border); border-radius: 6px; background: var(--neo-surface); }
+.neo-gallery-thumbnail > svg { display: block; width: 100%; height: 100%; }
+.neo-gallery-thumbnail[aria-pressed="true"] { outline: 2px solid var(--neo-ink); outline-offset: 3px; box-shadow: 3px 3px 0 var(--neo-purple); }
+.neo-product-gallery .neo-gallery-caption { margin-top: 10px; font-size: 10px; }
+@media (max-width: 800px) {
+  .neo-product-overview { grid-template-columns: minmax(0, 1fr); }
+  .neo-product-info { position: static; }
+  .neo-product-gallery { max-width: none; }
+  .neo-product-image { height: auto; aspect-ratio: 16 / 10; }
+}
+
+/* Fluid page layout: only individual paragraphs and controls limit their width. */
+.neo-game-page,
+.neo-market-layout,
+.neo-product-overview,
+.neo-product-content {
+  width: 100%;
+  min-width: 0;
+}
+
+@media (max-width: 600px) {
+  .neo-listing-grid,
+  .neo-recommendation-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

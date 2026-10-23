@@ -3,7 +3,7 @@ import { ArrowUpRight, Gamepad2 } from "lucide-react";
 import { Brand } from "@/components/brand";
 
 export { Brand } from "@/components/brand";
-export { SiteHeader } from "@/components/site-header";
+export { SiteHeader } from "@/components/site/header";
 
 export function SiteFooter() {
   return (
@@ -18,7 +18,7 @@ export function SiteFooter() {
           </p>
         </div>
         <div className="footer-links">
-          <Link href="/#games">Jelajahi game</Link>
+          <Link href="/games">Jelajahi game</Link>
           <Link href="/#how-it-works">Cara membeli</Link>
           <Link href="/#faq">Pusat bantuan</Link>
           <Link href="/seller/applications">

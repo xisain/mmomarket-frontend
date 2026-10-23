@@ -21,7 +21,7 @@ import {
   CircleHelp,
   type LucideIcon,
 } from "lucide-react";
-import { Brand } from "@/components/site-shell";
+import { Brand } from "@/components/site/shell";
 import {
   adminSections,
   sellerSections,

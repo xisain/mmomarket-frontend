@@ -14,7 +14,7 @@ import {
   Sparkles,
   UserRound,
 } from "lucide-react";
-import { LootArt } from "@/components/game-art";
+import { LootArt } from "@/components/game/art";
 import { useRouter } from "next/navigation";
 import { login, register } from "@/lib/auth";
 import { SellerApplicationForm } from "@/components/seller/application-form";

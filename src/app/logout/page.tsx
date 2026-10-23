@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { LogoutButton } from "@/components/logout-button";
-import { SiteHeader } from "@/components/site-shell";
+import { LogoutButton } from "@/components/logout/button";
+import { SiteHeader } from "@/components/site/shell";
 
 export const metadata: Metadata = { title: "Keluar" };
 

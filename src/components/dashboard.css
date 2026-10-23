@@ -101,3 +101,22 @@
 }
 @media (max-width: 380px) { .dash-main { padding-inline: 15px; }.dash-sidebar { padding-inline: 15px; }.dash-topbar { padding-inline: 15px; }.dash-topbar > span > span:first-child { display: none; }.dash-stats { grid-template-columns: 1fr; }.dash-stat > strong { font-size: 32px; }.dash-table-toolbar { flex-wrap: wrap; }.dash-status-filter,.dash-status-filter select { width: 100%; max-width: none; }.dash-page-heading h1 { font-size: 29px; } }
 @media (prefers-reduced-motion: reduce) { .dash-stat { transition: none; }.dash-stat:hover { transform: none; } }
+
+/* Future seller inventory actions; scoped to the seller workspace. */
+.dash-seller .seller-listing-header-actions { display: flex; align-items: center; flex-wrap: wrap; justify-content: flex-end; gap: 14px; }
+.dash-seller .seller-listing-header-actions .neo-button { min-height: 44px; }
+.dash-seller .seller-listing-placeholder-note { margin: -6px 22px 20px; color: var(--muted); font-size: 11px; line-height: 1.7; }
+.dash-seller .seller-listing-row-actions { display: flex; align-items: center; gap: 8px; }
+.dash-seller .seller-listing-action { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; padding: 8px 12px; border: 1.5px solid var(--line); border-radius: 4px; background: var(--secondary); font-size: 11px; font-weight: 700; box-shadow: 2px 2px 0 var(--line); }
+.dash-seller .seller-listing-delete { background: #fee2e2; }
+.dash-seller .seller-listing-action:hover { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--line); }
+.dash-seller .seller-listing-placeholder-product { margin-block: 12px; font-weight: 700; overflow-wrap: anywhere; }
+.dash-seller .seller-listing-placeholder > .neo-button { margin-top: 20px; }
+@media (max-width: 760px) {
+  .dash-seller .dash-panel-title:has(.seller-listing-header-actions) { flex-wrap: wrap; }
+  .dash-seller .seller-listing-header-actions { justify-content: flex-start; }
+  .dash-seller .seller-listing-placeholder-note { margin-inline: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dash-seller .seller-listing-action:hover { transform: none; }
+}

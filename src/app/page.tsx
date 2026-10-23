@@ -1,5 +1,5 @@
 import { Marketplace } from "@/components/marketplace";
-import { SiteHeader, SiteFooter } from "@/components/site-shell";
+import { SiteHeader, SiteFooter } from "@/components/site/shell";
 import { Suspense } from "react";
 import { connection } from "next/server";
 import { gameService } from "@/lib/services/game.service";

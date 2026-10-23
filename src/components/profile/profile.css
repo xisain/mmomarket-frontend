@@ -224,3 +224,6 @@ body:has(.buyer-payment-dialog[open]) { overflow: hidden; }
     font-size: 12px;
   }
 }
+
+/* Buyer workspace fills its available column without changing seller/admin shells. */
+.dash-buyer .dash-main { width: 100%; min-width: 0; max-width: none; margin-inline: 0; }

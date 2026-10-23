@@ -6,7 +6,7 @@ import { ArrowUpRight, Menu, X, UserRound } from "lucide-react";
 import { Brand } from "@/components/brand";
 import { ApiError } from "@/lib/api";
 import { getCurrentUser, type CurrentUser } from "@/lib/auth";
-import { LogoutButton } from "@/components/logout-button";
+import { LogoutButton } from "@/components/logout/button";
 import { sellerDashboardHref } from "@/lib/seller";
 
 type Session =
@@ -92,7 +92,7 @@ export function SiteHeader({ minimal = false }: { minimal?: boolean }) {
         <Brand />
         {!minimal && (
           <nav className="desktop-nav" aria-label="Navigasi utama">
-            <Link href="/#games">Jelajahi game</Link>
+            <Link href="/games">Jelajahi game</Link>
             <Link href="/#offers">Kategori</Link>
             <Link href="/#how-it-works">Cara kerja</Link>
           </nav>
@@ -122,7 +122,7 @@ export function SiteHeader({ minimal = false }: { minimal?: boolean }) {
             }
           }}
         >
-          <Link href="/#games">Jelajahi game</Link>
+          <Link href="/games">Jelajahi game</Link>
           <Link href="/#offers">Kategori</Link>
           <Link href="/#how-it-works">Cara kerja</Link>
           {sellerAction(true)}

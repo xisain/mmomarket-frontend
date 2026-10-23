@@ -1,6 +1,6 @@
 import { Brand } from "@/components/brand";
-import "./dashboard.css";
-import "./dashboard-skeleton.css";
+import "@/components/dashboard.css";
+import "./skeleton.css";
 
 function Placeholder({ className = "" }: { className?: string }) {
   return <span className={`dash-skeleton ${className}`} />;
